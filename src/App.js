@@ -52,7 +52,6 @@ const initialState = {
   currPlayer: 1, // 1 or 0
   winner: null, // 1, 0, or null
   full: false, // true, false
-  buffer: false,
 };
 
 const getInitialState = () => {
@@ -67,25 +66,22 @@ const getInitialState = () => {
 };
 
 const App = () => {
-  const [state, setState] = useState(getInitialState());
+  const [state, setState] = useState(() => getInitialState());
 
-  const { gridModel, currPlayer, buffer } = state; // winner, full
+  const { gridModel, currPlayer, winner, full } = state;
 
   const reset = () => {
     alert(message);
-    setState(getInitialState());
-    /*return new Promise(resolve => { 
-      setState(getInitialState())
-    }); */
+    setState(() => getInitialState());
   };
-  
+  /*
   const winner = getWinner(gridModel);
   const full = isFull(gridModel);
   const message = winner != null ? getWinMessage(winner) : drawMessage;
   const isFinished = winner != null || full;
   if (isFinished) {
     reset();
-  }
+  }*/
   
 
   /*
@@ -95,9 +91,9 @@ const App = () => {
   }
   */
 
-  const updateState = x => {
+  const updateState = classes => {
     // eslint-disable-next-line
-    let [ row, col, others ] = x.split(" ", 3);
+    let [ row, col, others ] = classes.split(" ", 3);
     row = row[4]; // row-?
     col = col[4]; // col-?
     const gridModelCopy = [
@@ -106,37 +102,40 @@ const App = () => {
       [...gridModel[2]]
     ];
     gridModelCopy[row][col] = currPlayer;
-    // alert(row + " " + col) // debugging statement
-    setState({
+
+    setState(() => {return {
       gridModel: gridModelCopy,
       currPlayer: 1 - currPlayer,
-      //winner: getWinner(gridModelCopy),
-      //full: isFull(gridModelCopy),
+      winner: getWinner(gridModelCopy),
+      full: isFull(gridModelCopy),
       buffer: true,
-    });
+    }});
   };
 
   //let handler = !buffer || !isFinished ? x => updateState(x) : reset;
   //let handler = x => !buffer || !isFinished ? updateState(x) : reset(); 
   let handler = x => updateState(x);
 
+  const isFinished = (winner != null) || full;
+  const message = winner != null ? getWinMessage(winner) : drawMessage;
 
-  /*
+
   if (isFinished) {
     return (
       <div className="App">
+        <script defer>{reset()}</script>
         <Grid gridModel={gridModel} notifyApp={handler} finishMessage={message} />
       </div>
     );
   }
-  */
 
   //        <script>{setTimeout(reset(), 3000)}</script>
+  /*
   useEffect(() => {
     if (isFinished) {
       alert(message);
     };
-  });
+  });*/
 
   return (
     <div className="App">
