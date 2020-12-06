@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Grid from './TTTGrid.js';
 import './App.css';
 
@@ -13,6 +13,7 @@ const lines = [ // list of winning coordinate sets
   [[0, 2], [1, 1], [2, 0]], // diagonal from top-right
 ];
 
+// eslint-disable-next-line
 const allEqual = (x, y, z) => x == y && y == z && x == z;
 
 const getWinner = (grid) => {
@@ -27,7 +28,6 @@ const getWinner = (grid) => {
       return grid[x1][y1];
     }
   }
-  console.log("no winner yet");
   return null;
 };
 
@@ -43,35 +43,98 @@ const isFull = grid => {
   return true;
 };
 
+const drawMessage = "It's a draw! Resetting the game...";
+
+const getWinMessage = player => `The winner is player ${player ? 'X' : 'O'}`;
+
+const initialState = {
+  gridModel: [[null, null, null], [null, null, null], [null, null, null]],
+  currPlayer: 1, // 1 or 0
+  winner: null, // 1, 0, or null
+  full: false, // true, false
+  buffer: false,
+};
+
+const getInitialState = () => {
+  return {
+    ...initialState,
+    gridModel: [
+      [...initialState.gridModel[0]],
+      [...initialState.gridModel[1]], 
+      [...initialState.gridModel[2]]
+    ],
+  };
+};
+
 const App = () => {
-  const [state, setState] = useState({
-    gridModel: [[null, null, null], [null, null, null], [null, null, null]],
-    currPlayer: 1, // 1 or 0
-    winner: null, // 1, 0, or null
-    full: false, // true, false
-  });
+  const [state, setState] = useState(getInitialState());
 
-  const { gridModel, currPlayer, winner, full } = state;
+  const { gridModel, currPlayer, buffer } = state; // winner, full
 
-  const clicked = x => {
-    let [ row, col, ...others ] = x.split(" ");
+  const reset = () => {
+    alert(message);
+    setState(getInitialState());
+  };
+  
+  const winner = getWinner(gridModel);
+  const full = isFull(gridModel);
+  const message = winner != null ? getWinMessage(winner) : drawMessage;
+  const isFinished = winner != null || full;
+  if (isFinished) {
+    reset();
+  }
+  
+
+  /*
+  if (isFinished) {
+    setTimeout(alert(message), 2000);
+    //setTimeout(reset(), 1000);
+  }
+  */
+
+  const updateState = x => {
+    // eslint-disable-next-line
+    let [ row, col, others ] = x.split(" ", 3);
     row = row[4]; // row-?
     col = col[4]; // col-?
-    const gridModelCopy = [[...gridModel[0]], [...gridModel[1]], [...gridModel[2]]];
+    const gridModelCopy = [
+      [...gridModel[0]], 
+      [...gridModel[1]], 
+      [...gridModel[2]]
+    ];
     gridModelCopy[row][col] = currPlayer;
     // alert(row + " " + col) // debugging statement
     setState({
       gridModel: gridModelCopy,
       currPlayer: 1 - currPlayer,
-      winner: getWinner(gridModelCopy),
-      full: isFull(gridModelCopy)
+      //winner: getWinner(gridModelCopy),
+      //full: isFull(gridModelCopy),
+      buffer: true,
     });
   };
 
-  const handler = x => clicked(x); 
+  //let handler = !buffer || !isFinished ? x => updateState(x) : reset;
+  //let handler = x => !buffer || !isFinished ? updateState(x) : reset(); 
+  let handler = x => updateState(x);
 
-  // if full -> announce draw and ask to reset
-  // if winner -> announce winner and ask to reset
+
+  /*
+  if (isFinished) {
+    return (
+      <div className="App">
+        <Grid gridModel={gridModel} notifyApp={handler} finishMessage={message} />
+      </div>
+    );
+  }
+  */
+
+  //        <script>{setTimeout(reset(), 3000)}</script>
+  useEffect(() => {
+    if (isFinished) {
+      alert(message);
+    };
+  });
+
   return (
     <div className="App">
       <Grid gridModel={gridModel} notifyApp={handler} />

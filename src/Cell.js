@@ -8,10 +8,9 @@ const Cell = (props) => {
 
     /* // debugging statements
     console.log(content);
-    console.log(props.hasOwnProperty("content") ? "Cell is filled" : "Cell is empty")
-    */
-
+    console.log(props.hasOwnProperty("content") ? "Cell is filled" : "Cell is empty");
     console.log("Cell component loaded");
+    */
 
     if (props.content != null) {
         const symbol = <img src={content == 0 ? o : x} alt="cross"></img>;
