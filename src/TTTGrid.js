@@ -1,5 +1,4 @@
 import './TTTGrid.css';
-import './Cell.css';
 import Cell from './Cell.js';
 
 const TTTGrid = () => {

@@ -1,9 +1,5 @@
 import { useState } from 'react';
-import logo from './logo.svg';
-import Cell from './Cell.js';
 import Grid from './TTTGrid.js';
-import './TTTGrid.css';
-import './Cell.css';
 import './App.css';
 
 const App = () => {
