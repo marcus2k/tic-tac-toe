@@ -3,10 +3,10 @@ import Cell from './Cell.js';
 
 const TTTGrid = (props) => {
     const { gridModel, notifyApp } = props;
-
-    //let gridModel = [[1,0,1], [1,1,0], [0, null, null]]
-    console.log("Grid loaded")
     const handler = x => notifyApp(x);
+
+    console.log("TTTGrid component loaded")
+
     return (
     <>
         <h1>

@@ -4,14 +4,13 @@ import o from './o.png';
 
 const Cell = (props) => {
     const { classes, content, notifyGrid } = props
-    
+    const handler = () => notifyGrid(classes);
+
     /* // debugging statements
     console.log(content);
     console.log(props.hasOwnProperty("content") ? "Cell is filled" : "Cell is empty")
     */
-
-    const handler = () => notifyGrid(classes);
-
+   
     console.log("Cell component loaded")
 
     if (props.content != null) {
