@@ -2,81 +2,46 @@ import { useState } from 'react';
 import Grid from './TTTGrid.js';
 import './App.css';
 
-const getWinner = (grid) => {
-  console.log(grid);
-  for (let i = 0; i < 3; i++) {
-    if (grid[i][i] == null) {
-      continue
-    }
-    // matchRow
-    if (grid[i][0] == grid[i][1] == grid[i][2]) {
-      console.log(`winner is ${grid[i][0]}`)
-      return grid[i][0];
-    }
-    // matchCol
-    if (grid[0][i] == grid[1][i] == grid[2][i]) {
-      console.log(`winner is ${grid[0][i]}`)
-      return grid[0][i];
-    }
-  }
-  // diagonal cannot match
-  if (grid[1][1] == null) {
-    console.log("no winner")
-    return null;
-  }
-  // match diagonal
-  if (grid[0][0] == grid[1][1] == grid[2][2]) {
-    console.log(`winner is ${grid[0][0]}`)
-    return grid[0][0];
-  }
-  // match other diagonal
-  if (grid[0][2] == grid[1][1] == grid[2][0]) {
-    console.log(`winner is ${grid[0][2]}`)
-    return grid[0][2];
-  }
-  // no winner
-  console.log("no winner")
-  return null;
-}
+const lines = [ // list of winning coordinate sets
+  [[0, 0], [0, 1], [0, 2]], // first row
+  [[1, 0], [1, 1], [1, 2]], // second row
+  [[2, 0], [2, 1], [2, 2]], // third row
+  [[0, 0], [1, 0], [2, 0]], // first column
+  [[0, 1], [1, 1], [2, 1]], // second column
+  [[0, 2], [1, 2], [2, 2]], // third column
+  [[0, 0], [1, 1], [2, 2]], // diagonal from top-left
+  [[0, 2], [1, 1], [2, 0]], // diagonal from top-right
+];
 
-/*
+const allEqual = (x, y, z) => x == y && y == z && x == z;
+
 const getWinner = (grid) => {
   console.log(grid);
-  for (let i = 0; i < 3; i++) {
-    // matchRow
-    if (grid[i][0] == grid[i][1] == grid[i][2]) {
-      if (grid[i][0] != null) {
-        console.log(`winner is ${grid[i][0]}`)
-        return grid[i][0];
-      }
+  for (let i = 0; i < 8; i++) {
+    const [[x1, y1], [x2, y2], [x3, y3]] = lines[i];
+    if (grid[x1][y1] == null || grid[x2][y2] == null || grid[x3][y3] == null) {
+      continue;
     }
-    // matchCol
-    if (grid[0][i] == grid[1][i] == grid[2][i]) {
-      if (grid[0][i] != null) {
-        console.log(`winner is ${grid[0][i]}`)
-        return grid[0][i];
+    if (allEqual(grid[x1][y1], grid[x2][y2], grid[x3][y3])) {
+      console.log(`Winner is ${grid[x1][y1]}`);
+      return grid[x1][y1];
+    }
+  }
+  console.log("no winner yet");
+  return null;
+};
+
+const isFull = grid => {
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 3; c++) {
+      if (grid[r][c] == null) {
+        return false;
       }
     }
   }
-
-  if (grid[1][1] != null) {
-    // match diagonal
-    if (grid[0][0] == grid[1][1] == grid[2][2]) {
-      console.log(`winner is ${grid[0][0]}`)
-      return grid[0][0];
-    }
-    // match other diagonal
-    if (grid[0][2] == grid[1][1] == grid[2][0]) {
-      console.log(`winner is ${grid[0][2]}`)
-      return grid[0][2];
-    }
-  }
-
-  // no winner
-  console.log("no winner")
-  return null;
-}
-*/
+  console.log("full");
+  return true;
+};
 
 const App = () => {
   const [state, setState] = useState({
@@ -84,26 +49,15 @@ const App = () => {
     currPlayer: 1, // 1 or 0
     winner: null, // 1, 0, or null
     full: false, // true, false
-  })
+  });
 
-  const { gridModel, currPlayer, winner, full } = state
-
-  const isFull = (grid) => {
-    grid.forEach(row => {
-      row.forEach(val => {
-        if (val == null) {
-          return false;
-        }
-      })
-    })
-    return true;
-  }
+  const { gridModel, currPlayer, winner, full } = state;
 
   const clicked = x => {
-    let [row, col, ...others] = x.split(" ")
-    row = row[4] // row-?
-    col = col[4] // col-?
-    let gridModelCopy = [[...gridModel[0]], [...gridModel[1]], [...gridModel[2]]];
+    let [ row, col, ...others ] = x.split(" ");
+    row = row[4]; // row-?
+    col = col[4]; // col-?
+    const gridModelCopy = [[...gridModel[0]], [...gridModel[1]], [...gridModel[2]]];
     gridModelCopy[row][col] = currPlayer;
     // alert(row + " " + col) // debugging statement
     setState({
@@ -111,41 +65,18 @@ const App = () => {
       currPlayer: 1 - currPlayer,
       winner: getWinner(gridModelCopy),
       full: isFull(gridModelCopy)
-    })
-  }
+    });
+  };
 
   const handler = x => clicked(x); 
 
   // if full -> announce draw and ask to reset
   // if winner -> announce winner and ask to reset
-
   return (
     <div className="App">
       <Grid gridModel={gridModel} notifyApp={handler} />
     </div>
-  )
-  
-
-  /*
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
   );
-  */
-}
+};
 
 export default App;
