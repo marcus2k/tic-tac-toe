@@ -5,26 +5,11 @@ import Cell from './Cell.js';
 
 
 const App = () => {
-  
-  /*  // states
-  const players = {0: 'O', 1: 'null'}
-
-  // define updateTurn, updateCell, updateGame ? check guide
-
-  const [currPlayer, updateTurn] = useState(0) // who is the current player?
-  const [winner, updateGame] = useState(null) // is there a winner?
-  const [full, isFull] = useState(false) // is grid full?
-  */
-
-  //const [gridModel, updateCell] = useState([[null, null, null], [null, null, null], [null, null, null]])
-
-  // const gridModel = [[null, null, 1], [0, null, 1], [1, null, null]]
-
   const [state, setState] = useState({
     gridModel: [[null, null, null], [null, null, null], [null, null, null]],
-    currPlayer: 1,
-    //winner: null,
-    //full: false
+    currPlayer: 1, // 1 or 0
+    //winner: null, // 1, 0, or null
+    //full: false, // true, false
   });
   const { gridModel, currPlayer, winner, full } = state;
   const handler = x => clicked(x); 
@@ -33,12 +18,7 @@ const App = () => {
     let [row, col, ...others] = x.split(" ")
     row = row[4]
     col = col[4]
-    let gridModelCopy = [[null, null, null], [null, null, null], [null, null, null]]
-    for (let i = 0; i < 3; i++) {
-      for (let k = 0; k < 3; k++) {
-        gridModelCopy[i][k] = gridModel[i][k];
-      }
-    }
+    let gridModelCopy = [[...gridModel[0]], [...gridModel[1]], [...gridModel[2]]];
     gridModelCopy[row][col] = currPlayer;
     setState({
       gridModel: gridModelCopy,
