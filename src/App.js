@@ -45,7 +45,7 @@ const isFull = grid => {
 
 const drawMessage = "It's a draw! Resetting the game...";
 
-const getWinMessage = player => `The winner is player ${player ? 'X' : 'O'}`;
+const getWinMessage = player => `The winner is player ${player ? 'X' : 'O'}! Resetting the game...`;
 
 const initialState = {
   gridModel: [[null, null, null], [null, null, null], [null, null, null]],
@@ -74,6 +74,9 @@ const App = () => {
   const reset = () => {
     alert(message);
     setState(getInitialState());
+    /*return new Promise(resolve => { 
+      setState(getInitialState())
+    }); */
   };
   
   const winner = getWinner(gridModel);
