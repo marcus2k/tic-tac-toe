@@ -4,6 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import Cell from './Cell.js';
+import Grid from './TTTGrid.js';
+import './TTTGrid.css';
+import './Cell.css';
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

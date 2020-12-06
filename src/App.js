@@ -1,7 +1,32 @@
+import { useState } from 'react';
 import logo from './logo.svg';
+import Cell from './Cell.js';
+import Grid from './TTTGrid.js';
+import './TTTGrid.css';
+import './Cell.css';
 import './App.css';
 
-function App() {
+const App = () => {
+
+  /*  // states
+  const players = {0: 'O', 1: 'null'}
+
+  // define updateTurn, updateCell, updateGame ? check guide
+
+  const [currPlayer, updateTurn] = useState(0) // who is the current player?
+  const [content, updateCell] = useState([[null, null, null], [null, null, null], [null, null, null]])
+  const [winner, updateGame] = useState(null) // is there a winner?
+  const [full, isFull] = useState(false) // is grid full?
+  */
+
+  return (
+    <div className="App">
+      <Grid />
+    </div>
+  );
+  
+
+  /*
   return (
     <div className="App">
       <header className="App-header">
@@ -20,6 +45,7 @@ function App() {
       </header>
     </div>
   );
+  */
 }
 
 export default App;
