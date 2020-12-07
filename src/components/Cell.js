@@ -5,7 +5,7 @@ import o from './assets/img/o.png';
 const Cell = (props) => {
     const { classes, content, notifyGrid } = props;
     const hasContent = content != null;
-    const clickHandler = () => hasContent ? void(0) : notifyGrid(classes);
+    const clickHandler = hasContent ? void(0) : notifyGrid(classes);
     
     return(
         <td className={classes} onClick={clickHandler}>

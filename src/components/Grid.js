@@ -2,8 +2,7 @@ import './assets/css/Grid.css';
 import Cell from './Cell.js';
 
 const Grid = (props) => {
-    const { gridModel, notifyApp, isFinished } = props;
-    const clickHandler = x => notifyApp(x);
+    const { gridModel, clickHandler, isFinished } = props;
     const tableClass = isFinished ? "finished" : "";
 
     // console.log("Grid component loaded");
