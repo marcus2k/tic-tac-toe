@@ -4,19 +4,15 @@ import o from './assets/img/o.png';
 
 const Cell = (props) => {
     const { classes, content, notifyGrid } = props;
-    const handler = () => notifyGrid(classes);
-
-    if (props.content != null) {
-        const symbol = <img src={content == 0 ? o : x} alt="cross"></img>;
-        return(
-            <td className={classes}>
-                {symbol}
-            </td>
-        );
-    }
-
+    const hasContent = content != null;
+    const clickHandler = () => hasContent ? void(0) : notifyGrid(classes);
+    
     return(
-        <td className={classes} onClick={handler}></td>
+        <td className={classes} onClick={clickHandler}>
+            {hasContent && 
+                <img src={content ? x : o} alt="symbol"></img>
+            }
+        </td>
     );
 }
 

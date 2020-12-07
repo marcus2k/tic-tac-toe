@@ -103,12 +103,14 @@ const Game = () => {
     }});
   };
   
-  let handler = x => updateState(x);
+  let clickHandler = x => updateState(x);
 
   return (
     <>
-      <script defer>{isFinished ? reset() : null}</script>
-      <Grid gridModel={gridModel} notifyApp={handler} isFinished={isFinished} />
+      {isFinished && 
+        <script defer>{reset()}</script>
+      }
+      <Grid gridModel={gridModel} notifyApp={clickHandler} isFinished={isFinished} />
     </>
   );
 };
