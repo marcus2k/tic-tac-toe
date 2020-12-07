@@ -1,5 +1,5 @@
 import React from 'react';
-import Game from './components/Game.js';
+import Game from './components/Game';
 
 const App = () => (
   <div className="App">

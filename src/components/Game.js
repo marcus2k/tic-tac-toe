@@ -1,6 +1,5 @@
-import React from 'react';
-import { useState } from 'react';
-import Grid from './Grid.js';
+import React, { useState } from 'react';
+import Grid from './Grid';
 
 const lines = [ // list of winning coordinate sets
   [[0, 0], [0, 1], [0, 2]], // first row
