@@ -18,7 +18,7 @@ const Row = (props) => {
                         key={j}
                         classes={getClasses(rowNumber, j)} 
                         content={rowModel[j]} 
-                        notifyGrid={clickHandler} 
+                        clickHandler={clickHandler} 
                     />
                 ))
             }

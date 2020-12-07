@@ -61,8 +61,11 @@ const Game = () => {
     });
   };
 
-  const updateState = classes => {
+  const updateState = (event) => {
+    console.log(event);
+    event.preventDefault();
     // eslint-disable-next-line
+    const classes = event.target.className;
     let [ row, col, others ] = classes.split(" ", 3);
     row = row[4]; // "row-?"
     col = col[4]; // "col-?"
@@ -82,15 +85,13 @@ const Game = () => {
     }));
   };
   
-  let clickHandler = x => () => updateState(x);
-
   return (
     <>
       {isFinished && 
         <script>{reset()}</script>
       }
       <Title />
-      <Grid gridModel={gridModel} clickHandler={clickHandler} isFinished={isFinished} />
+      <Grid gridModel={gridModel} clickHandler={updateState} isFinished={isFinished} />
     </>
   );
 };
