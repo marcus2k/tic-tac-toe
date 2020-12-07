@@ -2,9 +2,9 @@ import './TTTGrid.css';
 import Cell from './Cell.js';
 
 const TTTGrid = (props) => {
-    const { gridModel, notifyApp, finishMessage } = props;
+    const { gridModel, notifyApp, isFinished } = props;
     const handler = x => notifyApp(x);
-    const tableClass = props.hasOwnProperty(finishMessage) ? "finished" : "";
+    const tableClass = isFinished ? "finished" : "";
 
     console.log("TTTGrid component loaded");
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Grid from './TTTGrid.js';
 import './App.css';
 
@@ -43,15 +43,19 @@ const isFull = grid => {
   return true;
 };
 
+const delay = (t, v) => new Promise(function(resolve) { 
+      setTimeout(resolve.bind(null, v), t)
+});
+
 const drawMessage = "It's a draw! Resetting the game...";
 
 const getWinMessage = player => `The winner is player ${player ? 'X' : 'O'}! Resetting the game...`;
 
 const initialState = {
   gridModel: [[null, null, null], [null, null, null], [null, null, null]],
-  currPlayer: 1, // 1 or 0
-  winner: null, // 1, 0, or null
-  full: false, // true, false
+  currPlayer: 1, // values: 1 or 0
+  winner: null, // values: 1, 0, or null
+  full: false, // values: true, false
 };
 
 const getInitialState = () => {
@@ -70,32 +74,21 @@ const App = () => {
 
   const { gridModel, currPlayer, winner, full } = state;
 
-  const reset = () => {
-    alert(message);
-    setState(() => getInitialState());
-  };
-  /*
-  const winner = getWinner(gridModel);
-  const full = isFull(gridModel);
-  const message = winner != null ? getWinMessage(winner) : drawMessage;
-  const isFinished = winner != null || full;
-  if (isFinished) {
-    reset();
-  }*/
-  
+  const isFinished = (winner != null) || full;
 
-  /*
-  if (isFinished) {
-    setTimeout(alert(message), 2000);
-    //setTimeout(reset(), 1000);
-  }
-  */
+  const reset = () => {
+    delay(0).then(() => {
+      const message = winner != null ? getWinMessage(winner) : drawMessage;
+      alert(message);
+      setState(() => getInitialState());
+    });
+  };
 
   const updateState = classes => {
     // eslint-disable-next-line
     let [ row, col, others ] = classes.split(" ", 3);
-    row = row[4]; // row-?
-    col = col[4]; // col-?
+    row = row[4]; // "row-?"
+    col = col[4]; // "col-?"
     const gridModelCopy = [
       [...gridModel[0]], 
       [...gridModel[1]], 
@@ -112,34 +105,20 @@ const App = () => {
     }});
   };
 
-  //let handler = !buffer || !isFinished ? x => updateState(x) : reset;
-  //let handler = x => !buffer || !isFinished ? updateState(x) : reset(); 
   let handler = x => updateState(x);
-
-  const isFinished = (winner != null) || full;
-  const message = winner != null ? getWinMessage(winner) : drawMessage;
-
 
   if (isFinished) {
     return (
       <div className="App">
         <script defer>{reset()}</script>
-        <Grid gridModel={gridModel} notifyApp={handler} finishMessage={message} />
+        <Grid gridModel={gridModel} notifyApp={handler} isFinished={isFinished} />
       </div>
     );
   }
 
-  //        <script>{setTimeout(reset(), 3000)}</script>
-  /*
-  useEffect(() => {
-    if (isFinished) {
-      alert(message);
-    };
-  });*/
-
   return (
     <div className="App">
-      <Grid gridModel={gridModel} notifyApp={handler} />
+      <Grid gridModel={gridModel} notifyApp={handler} isFinished={isFinished}/>
     </div>
   );
 };
