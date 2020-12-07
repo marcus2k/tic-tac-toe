@@ -16,14 +16,13 @@ const lines = [ // list of winning coordinate sets
 const allEqual = (x, y, z) => x == y && y == z && x == z;
 
 const getWinner = (grid) => {
-  console.log(grid);
   for (let i = 0; i < 8; i++) {
     const [[x1, y1], [x2, y2], [x3, y3]] = lines[i];
     if (grid[x1][y1] == null || grid[x2][y2] == null || grid[x3][y3] == null) {
       continue;
     }
     if (allEqual(grid[x1][y1], grid[x2][y2], grid[x3][y3])) {
-      console.log(`Winner is ${grid[x1][y1]}`);
+      console.log(`winner is ${grid[x1][y1]}`);
       return grid[x1][y1];
     }
   }
@@ -38,7 +37,7 @@ const isFull = grid => {
       }
     }
   }
-  console.log("full");
+  console.log("grid is full");
   return true;
 };
 
@@ -103,20 +102,14 @@ const Game = () => {
       buffer: true,
     }});
   };
-
+  
   let handler = x => updateState(x);
 
-  if (isFinished) {
-    return (
-      <>
-        <script defer>{reset()}</script>
-        <Grid gridModel={gridModel} notifyApp={handler} isFinished={isFinished} />
-      </>
-    );
-  }
-
   return (
-    <Grid gridModel={gridModel} notifyApp={handler} isFinished={isFinished} />
+    <>
+      <script defer>{isFinished ? reset() : null}</script>
+      <Grid gridModel={gridModel} notifyApp={handler} isFinished={isFinished} />
+    </>
   );
 };
 
