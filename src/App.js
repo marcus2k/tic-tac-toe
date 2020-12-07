@@ -1,5 +1,4 @@
-import Game from './Game.js';
-import './App.css';
+import Game from './components/Game.js';
 
 const App = () => (
   <div className="App">

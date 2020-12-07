@@ -1,4 +1,4 @@
-import './Grid.css';
+import './assets/css/Grid.css';
 import Cell from './Cell.js';
 
 const Grid = (props) => {

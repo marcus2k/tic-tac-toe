@@ -1,6 +1,6 @@
-import './Cell.css';
-import x from './x.png';
-import o from './o.png';
+import './assets/css/Cell.css';
+import x from './assets/img/x.png';
+import o from './assets/img/o.png';
 
 const Cell = (props) => {
     const { classes, content, notifyGrid } = props;
