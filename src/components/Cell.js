@@ -1,3 +1,4 @@
+import React from 'react';
 import './assets/css/Cell.css';
 import x from './assets/img/x.png';
 import o from './assets/img/o.png';

@@ -1,3 +1,4 @@
+import React from 'react';
 import './assets/css/Grid.css';
 import Cell from './Cell.js';
 
