@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Grid from './Grid';
+import Title from './Title';
 
-const lines = [ // list of winning coordinate sets
+const lines = [ // list of tic-tac-toe lines
   [[0, 0], [0, 1], [0, 2]], // first row
   [[1, 0], [1, 1], [1, 2]], // second row
   [[2, 0], [2, 1], [2, 2]], // third row
@@ -12,38 +13,16 @@ const lines = [ // list of winning coordinate sets
   [[0, 2], [1, 1], [2, 0]], // diagonal from top-right
 ];
 
-// eslint-disable-next-line
-const allEqual = (x, y, z) => x == y && y == z && x == z;
+const getWinner = grid => 
+  lines.map(line => line.map(cell => cell.reduce((r, c) => grid[r][c]))) // get line contents
+        .filter(line => line.filter(content => content === null).length === 0) // null filter
+        // eslint-disable-next-line
+        .filter(line => line.every(content => content == line[0])) // all-equal filter
+        .reduce((a, b) => b[0], null); // reduce to symbol or null (seed)
 
-const getWinner = (grid) => {
-  for (let i = 0; i < 8; i++) {
-    const [[x1, y1], [x2, y2], [x3, y3]] = lines[i];
-    if (grid[x1][y1] == null || grid[x2][y2] == null || grid[x3][y3] == null) {
-      continue;
-    }
-    if (allEqual(grid[x1][y1], grid[x2][y2], grid[x3][y3])) {
-      console.log(`winner is ${grid[x1][y1]}`);
-      return grid[x1][y1];
-    }
-  }
-  return null;
-};
+const isFull = grid => grid.filter(x => x.filter(y => y === null).length).length === 0;
 
-const isFull = grid => {
-  for (let r = 0; r < 3; r++) {
-    for (let c = 0; c < 3; c++) {
-      if (grid[r][c] == null) {
-        return false;
-      }
-    }
-  }
-  console.log("grid is full");
-  return true;
-};
-
-const delay = (t, v) => new Promise(function(resolve) { 
-      setTimeout(resolve.bind(null, v), t)
-});
+const delay = (t, v) => new Promise((resolve) => setTimeout(resolve.bind(null, v), t));
 
 const drawMessage = "It's a draw! Resetting the game...";
 
@@ -94,13 +73,13 @@ const Game = () => {
     ];
     gridModelCopy[row][col] = currPlayer;
 
-    setState(() => {return {
+    setState(() => ({
       gridModel: gridModelCopy,
       currPlayer: 1 - currPlayer,
       winner: getWinner(gridModelCopy),
       full: isFull(gridModelCopy),
       buffer: true,
-    }});
+    }));
   };
   
   let clickHandler = x => () => updateState(x);
@@ -108,8 +87,9 @@ const Game = () => {
   return (
     <>
       {isFinished && 
-        <script defer>{reset()}</script>
+        <script>{reset()}</script>
       }
+      <Title />
       <Grid gridModel={gridModel} clickHandler={clickHandler} isFinished={isFinished} />
     </>
   );
