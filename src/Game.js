@@ -76,7 +76,7 @@ const Game = () => {
   const isFinished = (winner != null) || full;
 
   const reset = () => {
-    delay(0).then(() => {
+    delay(100).then(() => {
       const message = winner != null ? getWinMessage(winner) : drawMessage;
       alert(message);
       setState(() => getInitialState());
